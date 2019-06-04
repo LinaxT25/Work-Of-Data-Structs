@@ -1,10 +1,12 @@
 #include <iostream>
 
-Class Text
+using namespace std;
+
+class Text
 {
 public:
-	int TextID;
-	string Text;
-	void KMP(string,string,int,int);
-	void CalculateD(string,int);
+	int T_size, S_size;
+	string Text, Search, Support;
+	int KMP(string,string,int,int);
+	void CalSupport(string,int);
 };
