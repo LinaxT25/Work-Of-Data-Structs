@@ -2,33 +2,54 @@
 
 int main()
 {
+    Text object; // Instanciação do objeto da classe
+    string teste, busca;
+
+    getline(cin, teste);
+    getline(cin, busca);
+ 
+    cout << object.KMP(teste, busca);
+    cout << "\n";
     return 0;
 }
 
 int
-Text::KMP(string Text, string Search, int T_size, int S_size)
+Text::KMP(string Text, string Search)
 {
-  int i, j;
-  bool equal;
+  int T_index, S_index; // Indices de Text & Search respectivamente
+  int T_size, S_size;   // Tamanho de Text & Search
+  bool equal;           
 
-  i = 0, j = i;
-  while(i - j <= T_size - S_size)
+  T_size = Text.size();
+  S_size = Search.size();
+  T_index = 0;  S_index = 0;
+  Text::CalSupport(Search, S_size);
+
+  while(T_index <= T_size - S_size)
     {
         equal = true;
-        while(j < S_size && equal)
+        while(S_index < S_size && equal)
         {
-            if(Text[i + 1] == Search[j + 1])
-                i++, j++;
+            if(Text[T_index + 1] == Search[S_index + 1])
+            {
+                T_index++;
+                S_index++;
+            }
             else 
                 equal = false;  
         }
         if(equal)
-            return i - S_size + 1;
-        if(j == 0)
-            i++;
+        {
+            cout << "Houve casamento!\n";
+            return T_index - S_size + 1;
+        }
+        if(S_index == 0)
+            T_index++;
         else
-            j = Text::Support[j];    
+            S_index = Text::Support[S_index];    
     }
+    cout << "Nao houve casamento!\n";
+    return -1;
 }
 
 void
@@ -36,7 +57,9 @@ Text::CalSupport(string Search, int S_size)
 {
     int j, k;
 
-    Text::Support[1] = 0, j = 0;
+    Text::Support[0] = 0;
+    j = 0;
+
     k = 1;
     while(k < S_size)
     {
