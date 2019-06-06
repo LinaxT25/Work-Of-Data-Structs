@@ -5,8 +5,7 @@ using namespace std;
 class Text
 {
 public:
-	string Support; // String publica da classe para uso compartilhado
+	string Support;
 	int KMP(string,string);
-	void CalSupport(string,int);
+	void CalPrefix(string,int);
 };
-
