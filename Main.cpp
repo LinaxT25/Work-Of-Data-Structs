@@ -1,5 +1,3 @@
-#include "Class.hpp"
-
 int main()
 {
     Text object; // Instanciação do objeto da classe
@@ -8,42 +6,40 @@ int main()
     getline(cin, teste);
     getline(cin, busca);
 
- 
-    cout << object.KMP(teste, busca);
-    cout << "\n";
+    object.KMP(teste,busca);
     return 0;
 }
 
-int
+void
 Text::KMP(string Text, string Search)
 {
   int T_index, S_index; // Indices de Text & Search respectivamente         
-
     
   T_index = 0;  S_index = 0;
   Text::CalPrefix(Search, Search.size());
-  cout << Text::Support[0];
 
-  while(T_index <= Text.size())
+  while((unsigned)T_index <= Text.size())
     {
-        if(Text[T_index + 1] == Search[S_index + 1])
+        if(Text[T_index] == Search[S_index])
         {
             T_index++;
             S_index++;
         }
-        if(S_index == Search.size())
+        if((unsigned)S_index == Search.size())
         {
             cout << "Houve casamento!\n";
-            return T_index - S_index;
+            cout << "Posicao:" << T_index - S_index << endl;
             S_index = Text::Support[S_index - 1];
-        }           
-        if(S_index == 0)
-            T_index++;
-        else
-            S_index = Text::Support[S_index - 1];   
+        }
+        if((unsigned)T_index < Text.size() && Search[S_index] != Text[T_index])
+        {
+            if(S_index == 0)
+                T_index++;
+            else
+                S_index = Text::Support[S_index - 1];
+        }
     }
     cout << "Nao houve casamento!\n";
-    return -1;
 }
 /* Encontra o maior prefixo que também é sufixo para auxilar no metodo KMP, e 
    reduzir comparações desnecessárias a serem realizadas pelo mesmo */
@@ -54,6 +50,7 @@ Text::CalPrefix(string Search, int S_size)
     int j; // Indice que localiza as posições de matching
 
     Text::Support.resize(S_size);
+    Support[0] = 0;
     j = 0, k = 0;
 
     while(k < S_size)
