@@ -53,9 +53,7 @@ Text::CalPrefix(string Search, int S_size)
     int k; // Indice e tamanho max da string Support
     int j; // Indice que localiza as posições de matching
 
-    Text::Support[0] = 0;
-    Text::Support.resize(S_size,'0');
-   
+    Text::Support.resize(S_size);
     j = 0, k = 0;
 
     while(k < S_size)
@@ -76,6 +74,5 @@ Text::CalPrefix(string Search, int S_size)
             else
                 j = Text::Support[j - 1]; // J recebe a posição anterior não incrementa i nem j;
         }    
-    }
-     cout << Text::Support;       
+    }      
 }
