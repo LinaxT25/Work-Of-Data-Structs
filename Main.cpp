@@ -49,7 +49,7 @@ Text::CalPrefix(string Search, int S_size)
     int k; // Indice e tamanho max da string Support
     int j; // Indice que localiza as posições de matching
 
-    Text::Support.resize(S_size);
+    Text::Support = new int[S_size];
     Support[0] = 0;
     j = 0, k = 0;
 
