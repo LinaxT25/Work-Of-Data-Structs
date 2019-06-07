@@ -6,6 +6,6 @@ class Text
 {
 public:
 	int *Support;
-	void KMP(string,string);
+	int KMP(string,string);
 	void CalPrefix(string,int);
 };
