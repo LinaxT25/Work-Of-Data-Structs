@@ -1,3 +1,5 @@
+#include "Class.hpp"
+
 int main()
 {
     Text object; // Instanciação do objeto da classe
