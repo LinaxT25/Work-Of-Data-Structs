@@ -3,16 +3,12 @@
 int main()
 {
     Text object; // Instanciação do objeto da classe
-    string teste, busca;
-
-    getline(cin, teste);
-    getline(cin, busca);
 
     object.KMP(teste,busca);
     return 0;
 }
 
-void
+int
 Text::KMP(string Text, string Search)
 {
   int T_index, S_index; // Indices de Text & Search respectivamente         
@@ -32,6 +28,7 @@ Text::KMP(string Text, string Search)
             cout << "Houve casamento!\n";
             cout << "Posicao:" << T_index - S_index << endl;
             S_index = Text::Support[S_index - 1];
+            return 0;
         }
         if((unsigned)T_index < Text.size() && Search[S_index] != Text[T_index])
         {
@@ -42,6 +39,7 @@ Text::KMP(string Text, string Search)
         }
     }
     cout << "Nao houve casamento!\n";
+    return -1;
 }
 /* Encontra o maior prefixo que também é sufixo para auxilar no metodo KMP, e 
    reduzir comparações desnecessárias a serem realizadas pelo mesmo */
