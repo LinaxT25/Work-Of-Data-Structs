@@ -4,17 +4,17 @@ int main()
 {
     Text object; // Instanciação do objeto da classe
 
-    object.KMP(teste,busca);
+    object.KMP(); // Função que deve verificar se a string está no arquivo
     return 0;
 }
-
+/* Função que realiza do padrão desejado na string que foi recebida pelo arquivo */
 int
 Text::KMP(string Text, string Search)
 {
   int T_index, S_index; // Indices de Text & Search respectivamente         
     
   T_index = 0;  S_index = 0;
-  Text::CalPrefix(Search, Search.size());
+  CalPrefix(Search, Search.size()); //Chamada para criar o array Support
 
   while((unsigned)T_index <= Text.size())
     {
@@ -27,7 +27,7 @@ Text::KMP(string Text, string Search)
         {
             cout << "Houve casamento!\n";
             cout << "Posicao:" << T_index - S_index << endl;
-            S_index = Text::Support[S_index - 1];
+            S_index = Support[S_index - 1];
             return 0;
         }
         if((unsigned)T_index < Text.size() && Search[S_index] != Text[T_index])
@@ -35,7 +35,7 @@ Text::KMP(string Text, string Search)
             if(S_index == 0)
                 T_index++;
             else
-                S_index = Text::Support[S_index - 1];
+                S_index = Support[S_index - 1];
         }
     }
     cout << "Nao houve casamento!\n";
@@ -49,7 +49,7 @@ Text::CalPrefix(string Search, int S_size)
     int k; // Indice e tamanho max da string Support
     int j; // Indice que localiza as posições de matching
 
-    Text::Support = new int[S_size];
+    Support = new int[S_size];
     Support[0] = 0;
     j = 0, k = 0;
 
@@ -58,18 +58,18 @@ Text::CalPrefix(string Search, int S_size)
         if(Search[k + 1] == Search[j]) // Se der match
         {
             j++;
-            Text::Support[k] = j;
+            Support[k] = j;
             k++;
         }
         else
         {
             if(j == 0)
             {
-                Text::Support[k] = 0;
+                Support[k] = 0;
                 k++;
             }
             else
-                j = Text::Support[j - 1]; // J recebe a posição anterior não incrementa i nem j;
+                j = Support[j - 1]; // J recebe a posição anterior não incrementa i nem j;
         }    
     }      
 }
