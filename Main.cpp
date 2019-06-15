@@ -4,7 +4,6 @@ int main(int argc, char* argv[])
 {
     // variaveis 
   string text_lines; // pegar linhas de texto
-  string nome_arq;  // nome do arquivo de entrada
   string word;
   string text_files; // lista de strings contendo o nome de cada arquivo que será armazenado
   ifstream filearq; // arquivo de entrada
@@ -14,9 +13,7 @@ int main(int argc, char* argv[])
   int aux_files = -1; 
 
 // lendo o arquivo de entrada e abrindo
-  cout << "Entre com o nome do arquivo: \n";
-  getline(cin,nome_arq);
-  filearq.open(nome_arq);
+  filearq.open(argv);
   getline(filearq, text_lines); // pegando a primeira linha do arquivo contendo o numero de arquivos que entrarão
   //Verificando a quantidade de arquivos de entrada
   if(text_lines.size() == 3)
