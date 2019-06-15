@@ -2,25 +2,21 @@
 
 int main(int argc, char* argv[])
 {
-  // Variáveis do programa
-  string text_lines; // pegar linhas de texto
-  string word;
-  string text_files;  // lista de strings contendo o nome de cada arquivo que será armazenado
-  ifstream filearq;   // arquivo de entrada
-  fstream file_test;  // testador de arquivos
-  ifstream word_arq;
-  int n;              // numero recebido pelo arq_in
-  int aux_files = 0; 
-  // Variáveis necessárias para encontrar a string nome do arquivo dentro da string que contem todos os nomes dos arquivos 
-  int pos = 0;        /// posição da string
-  int tam = 0;      /// tamanho da string
-  int ult_pos = -1; /// ultima posição do barra
+  /* Variáveis do programa */
+  string text_lines;  // Pega as linhas do texto & string auxiliar
+  string word;        // Palavras a serem buscadas nos arquivos
+  string text_files;  // String contendo o nome de cada arquivo verificado
+  ifstream filearq;   // Arquivo de entrada
+  fstream file_test;  // Testador de arquivos
+  ifstream word_arq;  // Arquivo das palavras a serem buscadas
+  int n;              // Armazena a quantidade total de arquivo existentes
+  int aux_files = 0;  // Variável inteira auxiliar
 
-
-  // lendo o arquivo de entrada e abrindo
+  /* Lendo o arquivo de entrada e mandando seu conteúdo para text_lines */
   filearq.open(argv[1]);
-  getline(filearq, text_lines); // pegando a primeira linha do arquivo contendo o numero de arquivos que entrarão
-  //Verificando a quantidade de arquivos de entrada
+  getline(filearq, text_lines); 
+
+  /* Verificando a quantidade de arquivos de entrada */
   if(text_lines.size() == 3)
   {
     n = (int)(text_lines[0] - '0') * 100;
@@ -35,62 +31,60 @@ int main(int argc, char* argv[])
   else
     n = (int)text_lines[0] - '0';
   
-  // rodando n vezes recebendo os arquivos de texto
+  /* Verifica a existencia dos arquivos recebidos */
   for (int i = 0; i < n; i++)
   {
-    getline(filearq, text_lines); //pegando o nome do arquivo daquela linha
-    file_test.open(text_lines);   //abrindo o arquivo
-    if(file_test.is_open())       // caso esteja aberto, significa que não foi criado
+    getline(filearq, text_lines); 
+    file_test.open(text_lines);   
+    if(file_test.is_open())       
     {
-      aux_files++; //incrementando a quantidade de arquivos que podem ser aberto
-      text_files.append(text_lines + "/"); // armazenando o nome do arquivo
+      aux_files++; // Incrementa o indice dos arquivos que existem
+      text_files.append(text_lines + "/"); // Armazena o nome dos arquivos
     }
-    file_test.close(); //fechando o arquivo independente se foi criado ou aberto
+    file_test.close(); 
   }
-  n = aux_files; // recebe a real quantidade de arquivos que há dentro da string;
+  n = aux_files; // Recebe a quantidade total de arquivos existentes
 
-  // Até esta parte, já foi possivel, ler o arquivo texto de entrada, ler o numero
-  // de arquivos, e reconhecer se estão funcionando ou não, caso não estejam não 
-  // armazenará o determinado arquivo
-
-// Recebendo o arquivo contendo as palavras
+  /* Recebendo o arquivo contendo as palavras a serem buscadas */
   getline(filearq, text_lines);
   word_arq.open(text_lines);
-  if(word_arq.is_open() == 0)
+  if(!word_arq.is_open())
     cout << "Não foi possível encontrar o arquivo contendo os padrões a serem buscados\n";
 
-// Enquanto não for o fim do arquivo ainda terá palavras a serem buscadas
+  /* Variáveis para buscar o nome dos arquivos armazenados dentro da string */
+  int pos = 0;        // Posição inicial do nome dos arquivos na string
+  int found = 0;      // Ultima posição da barra na string
+
+  /* Enquanto não for o fim do arquivo ainda terá palavras a serem buscadas */
   while(!word_arq.eof())
   {
-    getline(word_arq, word); //pegando a palavra a ser buscada
-    if(!word_arq.eof()) // caso seja diferente do final do arquivo, continue
-      for (int i = 1; i <= n; i++)  // procurando em todos os arquivos
+    getline(word_arq, word); // Pegando a palavra a ser buscada
+    if(!word_arq.eof()) // Caso seja diferente do final do arquivo, continue
+    { 
+      for (int i = 1; i <= n; i++)  // Procurando em todos os arquivos
       {
-        pos = ult_pos+1; // recebendo a pos do prim. char da str apos o barra
-        for (int j = pos; text_files[j] != '/'; j++)
+        found = text_files.find_first_of('/', pos);
+        if((unsigned)found != string::npos)
         {
-          tam++; // como não saiu do for, ainda tem mais caracteres na string
-          ult_pos++;
+          text_lines.assign(text_files, pos, found - pos);
+          pos = found + 1;
         }
-        ult_pos++; // no ultimo loop, ele nao incrementou a ultima posição
-        text_lines.assign(text_files, pos, tam);
-        tam = 0;
-        file_test.open(text_lines); //abrindo o arquivo para busca
-        while(!file_test.eof()) // enquanto for diferente do final do arquivo texto
+        file_test.open(text_lines); 
+        while(!file_test.eof()) // Enquanto for diferente do final do arquivo texto
         {
-          getline(file_test, text_lines);//mandando uma linha por vez do arquivo para o aux
+          getline(file_test, text_lines);
           // MANDAR PARA O KMP
         } 
-        file_test.close(); // após acabarem as buscas, fechar arquivo
-      }// fim for, acabaram os arquivos
-  }// fim while palavras, acabaram as palavras a serem buscadas
-
-   
+        file_test.close();
+      }
+    }
+  }
+  
   filearq.close();
-
     
-    return 0;
+  return 0;
 }
+
 /* Função que realiza do padrão desejado na string que foi recebida pelo arquivo */
 int
 Text::KMP(string Text, string Search)
@@ -98,7 +92,7 @@ Text::KMP(string Text, string Search)
   int T_index, S_index; // Indices de Text & Search respectivamente         
     
   T_index = 0;  S_index = 0;
-  CalPrefix(Search, Search.size()); //Chamada para criar o array Support
+  CalPrefix(Search, Search.size()); // Chamada para criar o array Support
 
   while((unsigned)T_index <= Text.size())
     {
@@ -125,6 +119,7 @@ Text::KMP(string Text, string Search)
     cout << "Nao houve casamento!\n";
     return -1;
 }
+
 /* Encontra o maior prefixo que também é sufixo para auxilar no metodo KMP, e 
    reduzir comparações desnecessárias a serem realizadas pelo mesmo */
 void
