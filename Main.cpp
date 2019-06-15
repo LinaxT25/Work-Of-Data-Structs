@@ -6,6 +6,7 @@ int main()
   string text_lines; // pegar linhas de texto
   string nome_arq;  // nome do arquivo de entrada
   string word;
+  string text_files; // lista de strings contendo o nome de cada arquivo que será armazenado
   ifstream filearq; // arquivo de entrada
   fstream file_test;  // testador de arquivos
   ifstream word_arq;
@@ -14,13 +15,12 @@ int main()
 
 // lendo o arquivo de entrada e abrindo
   cout << "Entre com o nome do arquivo: \n";
-  cin >> nome_arq;
+  getline(cin,nome_arq);
   filearq.open(nome_arq);
 
 // pegando a primeira linha do arquivo contendo o numero de arquivos que entrarâo
   getline(filearq, text_lines);
   n = text_lines[0]- '0'; // convertendo o caractere recebido para um inteiro
-  string text_files[n]; // lista de strings contendo o nome de cada arquivo que será armazenado
 
   // rodando n vezes recebendo os arquivos de texto
   for (int i = 0; i < n; i++)
@@ -53,7 +53,7 @@ int main()
     if(!word_arq.eof()) // caso seja diferente do final do arquivo, continue
       for (int i = 0; i <= n; i++)  // procurando em todos os arquivos
       {
-        file_test.open(text_files[i]); //abrindo o arquivo para busca
+        file_test.open(text_files); //abrindo o arquivo para busca
         while(!file_test.eof()) // enquanto for diferente do final do arquivo texto
         {
           getline(file_test, text_lines);//mandando uma linha por vez do arquivo para o aux
