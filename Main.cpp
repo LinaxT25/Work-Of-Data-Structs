@@ -17,11 +17,22 @@ int main()
   cout << "Entre com o nome do arquivo: \n";
   getline(cin,nome_arq);
   filearq.open(nome_arq);
-
-// pegando a primeira linha do arquivo contendo o numero de arquivos que entrarâo
-  getline(filearq, text_lines);
-  n = text_lines[0]- '0'; // convertendo o caractere recebido para um inteiro
-
+  getline(filearq, text_lines); // pegando a primeira linha do arquivo contendo o numero de arquivos que entrarão
+  //Verificando a quantidade de arquivos de entrada
+  if(text_lines.size() == 3)
+  {
+    n = (int)(text_lines[0] - '0') * 100;
+    n += (int)(text_lines[1] - '0') * 10;
+    n += (int)(text_lines[2] - '0');
+  }
+  else if(text_lines.size() == 2)
+  {
+    n = (int)(text_lines[1] - '0') * 10;
+    n += (int)(text_lines[2] - '0');
+  }
+  else
+    n = (int)(text_lines[2] - '0');
+  
   // rodando n vezes recebendo os arquivos de texto
   for (int i = 0; i < n; i++)
   {
