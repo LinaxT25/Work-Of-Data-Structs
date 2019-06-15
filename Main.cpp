@@ -27,10 +27,11 @@ int main()
   {
     getline(filearq, text_lines); //pegando o nome do arquivo daquela linha
     file_test.open(text_lines); //abrindo o arquivo
-    if(file_test.is_open() == 1)  // caso esteja aberto, significa que não foi criado
+    if(file_test.is_open())  // caso esteja aberto, significa que não foi criado
     {
-      aux_files = aux_files + 1; //incrementando a quantidade de arquivos que podem ser aberto
-      text_files[aux_files] = text_lines; // armazenando o nome do arquivo
+      aux_files++; //incrementando a quantidade de arquivos que podem ser aberto
+      text_lines.append(text_files); // armazenando o nome do arquivo
+      text_files.append("/");
     }
     file_test.close(); //fechando o arquivo independente se foi criado ou aberto
   } // fim for
