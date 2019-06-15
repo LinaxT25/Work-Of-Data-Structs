@@ -2,21 +2,19 @@
 
 int main(int argc, char* argv[])
 {
-    // variaveis 
-  string text_lines; // pegar linhas de texto
-  string nome_arq;  // nome do arquivo de entrada
+  // variaveis 
+  string text_lines;  // pegar linhas de texto
+  string nome_arq;    // nome do arquivo de entrada
   string word;
-  string text_files; // lista de strings contendo o nome de cada arquivo que será armazenado
-  ifstream filearq; // arquivo de entrada
+  string text_files;  // lista de strings contendo o nome de cada arquivo que será armazenado
+  ifstream filearq;   // arquivo de entrada
   fstream file_test;  // testador de arquivos
   ifstream word_arq;
   int n;              // numero recebido pelo arq_in
   int aux_files = -1; 
 
-// lendo o arquivo de entrada e abrindo
-  cout << "Entre com o nome do arquivo: \n";
-  getline(cin,nome_arq);
-  filearq.open(nome_arq);
+  // lendo o arquivo de entrada e abrindo
+  filearq.open(argv[1]);
   getline(filearq, text_lines); // pegando a primeira linha do arquivo contendo o numero de arquivos que entrarão
   //Verificando a quantidade de arquivos de entrada
   if(text_lines.size() == 3)
@@ -37,15 +35,16 @@ int main(int argc, char* argv[])
   for (int i = 0; i < n; i++)
   {
     getline(filearq, text_lines); //pegando o nome do arquivo daquela linha
-    file_test.open(text_lines); //abrindo o arquivo
-    if(file_test.is_open())  // caso esteja aberto, significa que não foi criado
+    file_test.open(text_lines);   //abrindo o arquivo
+    if(file_test.is_open())       // caso esteja aberto, significa que não foi criado
     {
       aux_files++; //incrementando a quantidade de arquivos que podem ser aberto
       text_files.append(text_lines); // armazenando o nome do arquivo
       text_files.append("/");
     }
     file_test.close(); //fechando o arquivo independente se foi criado ou aberto
-  } // fim for
+  }
+
   n = aux_files; // recebe a real quantidade de arquivos que há dentro da string;
 
   // Até esta parte, já foi possivel, ler o arquivo texto de entrada, ler o numero
@@ -70,7 +69,7 @@ int main(int argc, char* argv[])
         {
           getline(file_test, text_lines);//mandando uma linha por vez do arquivo para o aux
           // MANDAR PARA O KMP
-        } // fim while
+        } 
         file_test.close(); // após acabarem as buscas, fechar arquivo
       }// fim for, acabaram os arquivos
   }// fim while palavras, acabaram as palavras a serem buscadas
