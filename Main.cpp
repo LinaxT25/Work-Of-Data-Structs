@@ -2,9 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-  // variaveis 
-  string text_lines;  // pegar linhas de texto
-  string nome_arq;    // nome do arquivo de entrada
+  string text_lines; // pegar linhas de texto
   string word;
   string text_files;  // lista de strings contendo o nome de cada arquivo que será armazenado
   ifstream filearq;   // arquivo de entrada
