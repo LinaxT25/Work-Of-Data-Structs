@@ -1,6 +1,6 @@
 #include "Class.hpp"
 
-int main()
+int main(int argc, char* argv[])
 {
     // variaveis 
   string text_lines; // pegar linhas de texto
