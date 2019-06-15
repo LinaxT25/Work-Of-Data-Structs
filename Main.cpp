@@ -17,17 +17,19 @@ int main(int argc, char* argv[])
   //Verificando a quantidade de arquivos de entrada
   if(text_lines.size() == 3)
   {
+    
     n = (int)(text_lines[0] - '0') * 100;
     n += (int)(text_lines[1] - '0') * 10;
     n += (int)(text_lines[2] - '0');
   }
   else if(text_lines.size() == 2)
   {
-    n = (int)(text_lines[1] - '0') * 10;
-    n += (int)(text_lines[2] - '0');
+    
+    n = (int)(text_lines[0] - '0') * 10;
+    n += (int)(text_lines[1] - '0');
   }
   else
-    n = (int)(text_lines[2] - '0');
+    n = (int)text_lines[0] - '0';
   
   // rodando n vezes recebendo os arquivos de texto
   for (int i = 0; i < n; i++)
@@ -37,12 +39,10 @@ int main(int argc, char* argv[])
     if(file_test.is_open())       // caso esteja aberto, significa que não foi criado
     {
       aux_files++; //incrementando a quantidade de arquivos que podem ser aberto
-      text_files.append(text_lines); // armazenando o nome do arquivo
-      text_files.append("/");
+      text_files.append(text_lines + "/"); // armazenando o nome do arquivo
     }
     file_test.close(); //fechando o arquivo independente se foi criado ou aberto
   }
-
   n = aux_files; // recebe a real quantidade de arquivos que há dentro da string;
 
   // Até esta parte, já foi possivel, ler o arquivo texto de entrada, ler o numero
