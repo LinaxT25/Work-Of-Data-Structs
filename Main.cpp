@@ -2,6 +2,7 @@
 
 int main(int argc, char* argv[])
 {
+  // Variáveis do programa
   string text_lines; // pegar linhas de texto
   string word;
   string text_files;  // lista de strings contendo o nome de cada arquivo que será armazenado
@@ -9,7 +10,12 @@ int main(int argc, char* argv[])
   fstream file_test;  // testador de arquivos
   ifstream word_arq;
   int n;              // numero recebido pelo arq_in
-  int aux_files = -1; 
+  int aux_files = 0; 
+  // Variáveis necessárias para encontrar a string nome do arquivo dentro da string que contem todos os nomes dos arquivos 
+  int pos = 0;        /// posição da string
+  int tam = 0;      /// tamanho da string
+  int ult_pos = -1; /// ultima posição do barra
+
 
   // lendo o arquivo de entrada e abrindo
   filearq.open(argv[1]);
@@ -17,14 +23,12 @@ int main(int argc, char* argv[])
   //Verificando a quantidade de arquivos de entrada
   if(text_lines.size() == 3)
   {
-    
     n = (int)(text_lines[0] - '0') * 100;
     n += (int)(text_lines[1] - '0') * 10;
     n += (int)(text_lines[2] - '0');
   }
   else if(text_lines.size() == 2)
   {
-    
     n = (int)(text_lines[0] - '0') * 10;
     n += (int)(text_lines[1] - '0');
   }
@@ -60,9 +64,18 @@ int main(int argc, char* argv[])
   {
     getline(word_arq, word); //pegando a palavra a ser buscada
     if(!word_arq.eof()) // caso seja diferente do final do arquivo, continue
-      for (int i = 0; i <= n; i++)  // procurando em todos os arquivos
+      for (int i = 1; i <= n; i++)  // procurando em todos os arquivos
       {
-        file_test.open(text_files); //abrindo o arquivo para busca
+        pos = ult_pos+1; // recebendo a pos do prim. char da str apos o barra
+        for (int j = pos; text_files[j] != '/'; j++)
+        {
+          tam++; // como não saiu do for, ainda tem mais caracteres na string
+          ult_pos++;
+        }
+        ult_pos++; // no ultimo loop, ele nao incrementou a ultima posição
+        text_lines.assign(text_files, pos, tam);
+        tam = 0;
+        file_test.open(text_lines); //abrindo o arquivo para busca
         while(!file_test.eof()) // enquanto for diferente do final do arquivo texto
         {
           getline(file_test, text_lines);//mandando uma linha por vez do arquivo para o aux
