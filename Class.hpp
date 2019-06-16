@@ -9,8 +9,9 @@ class Text
 {
 public:
 	int *Support;
+	int  Match = 0;
 	/* Função que realiza do padrão desejado na string que foi recebida pelo arquivo */
-	int KMP(string Text, string Search)
+	void KMP(string Text, string Search)
 	{
 		int T_index, S_index; // Indices de Text & Search respectivamente         
 		
@@ -27,10 +28,10 @@ public:
 			if((unsigned)S_index == Search.size())
 			{
 				//cout << T_index - S_index << endl;
+				Match++;
 				S_index = Support[S_index - 1];
-				return 0;
 			}
-			if((unsigned)T_index < Text.size() && Search[S_index] != Text[T_index])
+			if((unsigned)T_index <= Text.size() && Search[S_index] != Text[T_index])
 			{
 				if(S_index == 0)
 					T_index++;
@@ -38,7 +39,6 @@ public:
 					S_index = Support[S_index - 1];
 			}
 		}
-		return -1;
 	}
 
 	/* Encontra o maior prefixo que também é sufixo para auxilar no metodo KMP, e 
