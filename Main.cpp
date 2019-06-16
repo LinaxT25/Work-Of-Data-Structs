@@ -82,14 +82,16 @@ int main(int argc, char* argv[])
           if(object.KMP(text_lines, word) != 0) // Se encontrou a palavra na linha
           {
             aux.append(' ' + to_string(i) + ',' + to_string(aux_files)); // Armazena a linha e o arquivo em que foi encontrado na string
-          }
+          } 
           aux_files++;
         } 
-        file_test.close();
-        text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
-        exit.open(text_lines + ".out", ofstream::out | ofstream::app);
-        exit << aux;
       }
+      file_test.close();
+      text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
+      exit.open(text_lines + ".out", ofstream::out | ofstream::app);
+      exit << word << aux << endl;
+      exit.close();
+      aux.clear();
     }
   }
   

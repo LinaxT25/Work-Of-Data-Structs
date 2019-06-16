@@ -12,7 +12,7 @@ public:
 	/* Função que realiza do padrão desejado na string que foi recebida pelo arquivo */
 	int KMP(string Text, string Search)
 	{
-		int Match;
+		int Match = 0;
 		int T_index, S_index; // Indices de Text & Search respectivamente         
 		
 		T_index = 0;  S_index = 0;
