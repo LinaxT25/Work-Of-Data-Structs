@@ -7,9 +7,11 @@ int main(int argc, char* argv[])
   string text_lines;  // Pega as linhas do texto & string auxiliar
   string word;        // Palavras a serem buscadas nos arquivos
   string text_files;  // String contendo o nome de cada arquivo verificado
+  string aux;         // Armazenar a quantidade de vezes e a linha que a palavra aparece num arquivo
   ifstream filearq;   // Arquivo de entrada
   fstream file_test;  // Testador de arquivos
   ifstream word_arq;  // Arquivo das palavras a serem buscadas
+  ofstream exit;      // Arquivo de saida com as ocorrências
   int n;              // Armazena a quantidade total de arquivo existentes
   int aux_files = 0;  // Variável inteira auxiliar
 
@@ -71,14 +73,22 @@ int main(int argc, char* argv[])
           text_lines.assign(text_files, pos, found - pos);
           pos = found + 1;
         }
-        file_test.open(text_lines); 
+        file_test.open(text_lines);
+        aux_files = 1; // Auxilar para escrever a linha da ocorrencia 
         while(!file_test.eof()) // Enquanto for diferente do final do arquivo texto
         {
           getline(file_test, text_lines);
           transform(text_lines.begin(),text_lines.end(),text_lines.begin(), ::tolower); // Transformando a linha do arquivo em minuscula
-          // MANDAR PARA O KMP
+          if(object.KMP(text_lines, word) != 0) // Se encontrou a palavra na linha
+          {
+            aux.append(' ' + to_string(i) + ',' + to_string(aux_files)); // Armazena a linha e o arquivo em que foi encontrado na string
+          }
+          aux_files++;
         } 
         file_test.close();
+        text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
+        exit.open(text_lines + ".out", ofstream::out | ofstream::app);
+        exit << aux;
       }
     }
   }

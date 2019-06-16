@@ -9,10 +9,10 @@ class Text
 {
 public:
 	int *Support;
-	int  Match = 0;
 	/* Função que realiza do padrão desejado na string que foi recebida pelo arquivo */
-	void KMP(string Text, string Search)
+	int KMP(string Text, string Search)
 	{
+		int Match;
 		int T_index, S_index; // Indices de Text & Search respectivamente         
 		
 		T_index = 0;  S_index = 0;
@@ -39,6 +39,7 @@ public:
 					S_index = Support[S_index - 1];
 			}
 		}
+		return Match;
 	}
 
 	/* Encontra o maior prefixo que também é sufixo para auxilar no metodo KMP, e 
