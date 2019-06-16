@@ -22,20 +22,8 @@ int main(int argc, char* argv[])
   filearq.open(argv[1]);
   getline(filearq, text_lines); 
 
-  /* Verificando a quantidade de arquivos de entrada */
-  if(text_lines.size() == 3)
-  {
-    n = (int)(text_lines[0] - '0') * 100;
-    n += (int)(text_lines[1] - '0') * 10;
-    n += (int)(text_lines[2] - '0');
-  }
-  else if(text_lines.size() == 2)
-  {
-    n = (int)(text_lines[0] - '0') * 10;
-    n += (int)(text_lines[1] - '0');
-  }
-  else
-    n = (int)text_lines[0] - '0';
+  /* Converte para inteiro a primeira linha do arquivo de entrada */
+  n = stoi(text_lines);
   
   /* Verifica a existencia dos arquivos recebidos */
   for (int i = 0; i < n; i++)
@@ -56,7 +44,6 @@ int main(int argc, char* argv[])
   word_arq.open(text_lines);
   if(!word_arq.is_open())
     cout << "Não foi possível encontrar o arquivo contendo os padrões a serem buscados\n";
-
   filearq.close(); // Fechando o arquivo de entrada
 
   /* Enquanto não for o fim do arquivo ainda terá palavras a serem buscadas */
@@ -87,13 +74,11 @@ int main(int argc, char* argv[])
       }
       file_test.close(); 
     }
+    text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
+    exit.open(text_lines + ".out", ofstream::out | ofstream::app);
     if(!aux.empty()) // Se a palavra foi encontrada em alguma posição
-    {
-      text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
-      exit.open(text_lines + ".out", ofstream::out | ofstream::app);
       exit << word << aux << endl;
-      exit.close(); 
-    }
+    exit.close();
     aux.clear(), text_lines.clear();
   }
    
