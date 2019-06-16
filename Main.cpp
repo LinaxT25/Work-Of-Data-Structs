@@ -87,12 +87,14 @@ int main(int argc, char* argv[])
       }
       file_test.close(); 
     }
-    text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
-    exit.open(text_lines + ".out", ofstream::out | ofstream::app);
-    exit << word << aux << endl;
-    exit.close();
-    aux.clear();
-    text_lines.clear();
+    if(!aux.empty()) // Se a palavra foi encontrada em alguma posição
+    {
+      text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
+      exit.open(text_lines + ".out", ofstream::out | ofstream::app);
+      exit << word << aux << endl;
+      exit.close(); 
+    }
+    aux.clear(), text_lines.clear();
   }
    
   return 0;

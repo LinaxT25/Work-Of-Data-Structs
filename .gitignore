@@ -4,3 +4,4 @@
 *.exe
 .vscode/settings.json
 *.txt
+*.out
