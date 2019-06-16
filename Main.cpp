@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
   int aux_files = 0;  // Variável inteira auxiliar
   /* Variáveis para buscar o nome dos arquivos armazenados dentro da string */
   int pos;            // Posição inicial do nome dos arquivos na string
-  int found ;         // Ultima posição da barra na string
+  int found;          // Ultima posição da barra na string
 
   /* Lendo o arquivo de entrada e mandando seu conteúdo para text_lines */
   filearq.open(argv[1]);
@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
   for (int i = 0; i < n; i++)
   {
     getline(filearq, text_lines); 
-    file_test.open(text_lines);   
-    if(file_test.is_open())       
+    file_test.open(text_lines);  
+    if(file_test && !filearq.eof())       
     {
       aux_files++; // Incrementa o indice dos arquivos que existem
       text_files.append(text_lines + "/"); // Armazena o nome dos arquivos
