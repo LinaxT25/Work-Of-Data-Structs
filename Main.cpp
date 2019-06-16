@@ -14,6 +14,9 @@ int main(int argc, char* argv[])
   ofstream exit;      // Arquivo de saida com as ocorrências
   int n;              // Armazena a quantidade total de arquivo existentes
   int aux_files = 0;  // Variável inteira auxiliar
+  /* Variáveis para buscar o nome dos arquivos armazenados dentro da string */
+  int pos;            // Posição inicial do nome dos arquivos na string
+  int found ;         // Ultima posição da barra na string
 
   /* Lendo o arquivo de entrada e mandando seu conteúdo para text_lines */
   filearq.open(argv[1]);
@@ -54,49 +57,44 @@ int main(int argc, char* argv[])
   if(!word_arq.is_open())
     cout << "Não foi possível encontrar o arquivo contendo os padrões a serem buscados\n";
 
-  /* Variáveis para buscar o nome dos arquivos armazenados dentro da string */
-  int pos = 0;        // Posição inicial do nome dos arquivos na string
-  int found = 0;      // Ultima posição da barra na string
+  filearq.close(); // Fechando o arquivo de entrada
 
   /* Enquanto não for o fim do arquivo ainda terá palavras a serem buscadas */
   while(!word_arq.eof())
   {
-    getline(word_arq, word); // Pegando a palavra a ser buscada
+    getline(word_arq, word, ' '); // Pegando a palavra a ser buscada
     transform(word.begin(),word.end(),word.begin(), ::tolower); // Tranformando a palavra buscada em minuscula
-    if(!word_arq.eof()) // Caso seja diferente do final do arquivo, continue
-    { 
-      for (int i = 1; i <= n; i++)  // Procurando em todos os arquivos
+    found = 0, pos = 0;
+    for (int i = 1; i <= n; i++)  // Procurando em todos os arquivos
+    {
+      found = text_files.find_first_of('/', pos);
+      if((unsigned)found != string::npos)
       {
-        found = text_files.find_first_of('/', pos);
-        if((unsigned)found != string::npos)
-        {
-          text_lines.assign(text_files, pos, found - pos);
-          pos = found + 1;
-        }
-        file_test.open(text_lines);
-        aux_files = 1; // Auxilar para escrever a linha da ocorrencia 
-        while(!file_test.eof()) // Enquanto for diferente do final do arquivo texto
-        {
-          getline(file_test, text_lines);
-          transform(text_lines.begin(),text_lines.end(),text_lines.begin(), ::tolower); // Transformando a linha do arquivo em minuscula
-          if(object.KMP(text_lines, word) != 0) // Se encontrou a palavra na linha
-          {
-            aux.append(' ' + to_string(i) + ',' + to_string(aux_files)); // Armazena a linha e o arquivo em que foi encontrado na string
-          } 
-          aux_files++;
-        } 
+        text_lines.assign(text_files, pos, found - pos);
+        pos = found + 1;
       }
-      file_test.close();
-      text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
-      exit.open(text_lines + ".out", ofstream::out | ofstream::app);
-      exit << word << aux << endl;
-      exit.close();
-      aux.clear();
+      file_test.open(text_lines);
+      aux_files = 1; // Auxilar para escrever a linha da ocorrencia
+      while(!file_test.eof()) // Enquanto for diferente do final do arquivo texto
+      {
+        getline(file_test, text_lines);
+        transform(text_lines.begin(),text_lines.end(),text_lines.begin(), ::tolower); // Transformando a linha do arquivo em minuscula
+        if(object.KMP(text_lines, word) != 0) // Se encontrou a palavra na linha
+        {
+          aux.append(' ' + to_string(i) + ',' + to_string(aux_files)); // Armazena a linha e o arquivo em que foi encontrado na string
+        } 
+        aux_files++;
+      }
+      file_test.close(); 
     }
+    text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
+    exit.open(text_lines + ".out", ofstream::out | ofstream::app);
+    exit << word << aux << endl;
+    exit.close();
+    aux.clear();
+    text_lines.clear();
   }
-  
-  filearq.close();
-    
+   
   return 0;
 }
 
