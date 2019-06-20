@@ -31,3 +31,5 @@ by the use of good programming practices.
   * to 1,3 2,1
   
 *Work very well for simple cases, but have many bugs with more complicated things, feel free for use which you desire, que IDFile in Outfile, depend of the order which the file is writted in Infile(your respectively line in Infile).*
+
+### Infile is passed by terminal argument when starting the program, remember this!!!
