@@ -2,57 +2,58 @@
 
 int main(int argc, char* argv[])
 {
-  /* Variáveis do programa */
-  Text object;        // Objeto para chamar os metodos da classe
-  string text_lines;  // Pega as linhas do texto & string auxiliar
-  string word;        // Palavras a serem buscadas nos arquivos
-  string text_files;  // String contendo o nome de cada arquivo verificado
-  string aux;         // Armazenar a quantidade de vezes e a linha que a palavra aparece num arquivo
-  ifstream filearq;   // Arquivo de entrada
-  fstream file_test;  // Testador de arquivos
-  ifstream word_arq;  // Arquivo das palavras a serem buscadas
-  ofstream exit;      // Arquivo de saida com as ocorrências
-  int n;              // Armazena a quantidade total de arquivo existentes
-  int aux_files = 0;  // Variável inteira auxiliar
-  /* Variáveis para buscar o nome dos arquivos armazenados dentro da string */
-  int pos;            // Posição inicial do nome dos arquivos na string
-  int found;          // Ultima posição da barra na string
+  /* Variables */
+  Text object;        // Object for call methods of class
+  string text_lines;  // String to store text lines also works as auxiliary string
+  string word;        // Word which need searching in archives
+  string text_files;  // String stores the name of verified files 
+  string aux;         // Store the number of files which we need searching recieved by infile
+  ifstream filearq;   // Infile
+  fstream file_test;  // Test the files
+  ifstream word_arq;  // File with content the words for need be searching
+  ofstream exit;      // Outfile
+  int n;              // Store the amount of files(can exist or not)
+  int aux_files = 0;  // Aux variable
+  
+  /* Variables to searching the name of verified files */
+  int pos;            // Initial position of files in string
+  int found;          // Last position of bar in string(files names separated by character '/' in string)
 
-  /* Lendo o arquivo de entrada e mandando seu conteúdo para text_lines */
+  /* Reading the infile passed by command arguments and sending the content for text_lines*/
   filearq.open(argv[1]);
   getline(filearq, text_lines); 
 
-  /* Converte para inteiro a primeira linha do arquivo de entrada */
+  /* Converting the first line(numbers caracters) in integers */
   n = stoi(text_lines);
   
-  /* Verifica a existencia dos arquivos recebidos */
+  /* Verifies the existence of files recieved from infile */
   for (int i = 0; i < n; i++)
   {
     getline(filearq, text_lines); 
     file_test.open(text_lines);  
     if(file_test && !filearq.eof())       
     {
-      aux_files++; // Incrementa o indice dos arquivos que existem
-      text_files.append(text_lines + "/"); // Armazena o nome dos arquivos
+      aux_files++; // Increment the index of verified files
+      text_files.append(text_lines + "/"); // Store the name of verified file
     }
     file_test.close(); 
   }
-  n = aux_files; // Recebe a quantidade total de arquivos existentes
+  n = aux_files; // Recieve the total amount of verifies files
 
-  /* Recebendo o arquivo contendo as palavras a serem buscadas */
+  /* Recieving the file with words to be searched */
   getline(filearq, text_lines);
   word_arq.open(text_lines);
-  if(!word_arq.is_open())
-    cout << "Não foi possível encontrar o arquivo contendo os padrões a serem buscados\n";
-  filearq.close(); // Fechando o arquivo de entrada
+  if(!word_arq)
+    cout << "Error in opening the file\n";
+  filearq.close();
 
-  /* Enquanto não for o fim do arquivo ainda terá palavras a serem buscadas */
+  /* Searching the desires words in the verified files */
   while(!word_arq.eof())
   {
-    getline(word_arq, word, ' '); // Pegando a palavra a ser buscada
-    transform(word.begin(),word.end(),word.begin(), ::tolower); // Tranformando a palavra buscada em minuscula
+    getline(word_arq, word, ' '); // Catching the word to be searched
+    transform(word.begin(),word.end(),word.begin(), ::tolower); // Transforming the word in lowercase
     found = 0, pos = 0;
-    for (int i = 1; i <= n; i++)  // Procurando em todos os arquivos
+    for (int i = 1; i <= n; i++)  // Searching in all verified files
     {
       found = text_files.find_first_of('/', pos);
       if((unsigned)found != string::npos)
@@ -61,22 +62,22 @@ int main(int argc, char* argv[])
         pos = found + 1;
       }
       file_test.open(text_lines);
-      aux_files = 1; // Auxilar para escrever a linha da ocorrencia
-      while(!file_test.eof()) // Enquanto for diferente do final do arquivo texto
+      aux_files = 1; // Variable used to store the line of occurency
+      while(!file_test.eof())
       {
         getline(file_test, text_lines);
-        transform(text_lines.begin(),text_lines.end(),text_lines.begin(), ::tolower); // Transformando a linha do arquivo em minuscula
-        if(object.KMP(text_lines, word) != 0) // Se encontrou a palavra na linha
+        transform(text_lines.begin(),text_lines.end(),text_lines.begin(), ::tolower); // Transforming the line in lowercase
+        if(object.KMP(text_lines, word) != 0) // Calling the method for searching the word in line
         {
-          aux.append(' ' + to_string(i) + ',' + to_string(aux_files)); // Armazena a linha e o arquivo em que foi encontrado na string
+          aux.append(' ' + to_string(i) + ',' + to_string(aux_files)); // Storing the line and the file where occur matching
         } 
         aux_files++;
       }
       file_test.close(); 
     }
-    text_lines.assign(argv[1]); // Auxilar para receber o nome do arquivo de entrada
+    text_lines.assign(argv[1]); // Aux to recieve the name of infile
     exit.open(text_lines + ".out", ofstream::out | ofstream::app);
-    if(!aux.empty()) // Se a palavra foi encontrada em alguma posição
+    if(!aux.empty()) // If the word have been founded in some position
       exit << word << aux << endl;
     exit.close();
     aux.clear(), text_lines.clear();
